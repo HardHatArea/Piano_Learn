@@ -1,6 +1,6 @@
 import random
 import turtle
-from scales import *
+import scales
 
 screen = turtle.Screen()
 image = "Piano.gif"
@@ -39,7 +39,7 @@ def get_mouse_click_coor(x, y):
         write_notename(-41, Y_NOTENAME_LOCATION, 'B', degree)
 
 def write_notename(x, y, notename, degree):
-    if (notename == ionian[degree]):
+    if (notename == degree):
         t = turtle.Turtle()
         t.hideturtle()
         t.penup()
@@ -57,8 +57,13 @@ def clear_screen(x,y):
 
 def new_question():
     global degree
-    degree = random.choice(list(ionian))
-    turtle.title(f"What is the {degree} of the C major scale")
+    mode_number = random.choice(list(scales.mode.values())) #get random value of mode
+    mode_name = [k for k, v in scales.mode.items() if v == mode_number] # get name of mode using value in prev step
+    degree = random.choice(list(scales.keyOfC[mode_number]))
+    degree_letter = scales.keyOfC[mode_number]
+    mode_name = ''.join(mode_name)# convert list to string
+    turtle.title(f"What is the {degree} of the {mode_name} mode in the key of C")
+    degree = degree_letter[degree] # change degree from string to notename
     turtle.onscreenclick(get_mouse_click_coor)
 
 new_question()
